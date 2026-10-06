@@ -1,0 +1,5 @@
+instance_name: "MyPhotoBooth"
+http_port: 8000
+slide_duration_sec: 8
+photos_dir: "photos"
+purge_on_start: false
