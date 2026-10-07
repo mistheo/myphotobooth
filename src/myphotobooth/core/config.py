@@ -11,6 +11,12 @@ import yaml
 
 class AppConfig:
     """Runtime configuration of the application.
+    
+    Notes
+    -----
+    Key in configuration have to be the same as the attribute names of the AppConfig class. 
+    The configuration file is expected to be in YAML format. 
+    If the configuration file is not found, default values are used.
 
     Attributes
     ----------
@@ -54,4 +60,14 @@ class AppConfig:
         ValueError
             If the file exists but contains invalid values.
         """
-        raise NotImplementedError
+        config = AppConfig()
+        if path is None:
+            return config
+        
+        with open(path, "r",encoding="utf-8") as f:
+            raw_config = yaml.safe_load(f)
+
+        for key, value in raw_config.items():
+            if hasattr(config, key):
+                setattr(config, key, value)
+        return config
