@@ -1,0 +1,5 @@
+{
+    "ruff.interpreter": [
+        "/home/mistheo/devs/myphotobooth/.venv/bin/ruff"
+    ]
+}
