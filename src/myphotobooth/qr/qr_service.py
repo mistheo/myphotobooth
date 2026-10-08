@@ -1,6 +1,7 @@
 """QR code generation from the detected local IP (F-HOTE-02/03, C-04)."""
 
 import socket
+import qrcode
 
 
 class QrService:
@@ -21,7 +22,7 @@ class QrService:
         str
             URL such as ``http://192.168.1.42:8000``.
         """
-        raise NotImplementedError
+        return f"http://{ip}:{port}"
 
     def render_png(self, url: str) -> bytes:
         """Render a URL as a PNG QR code.
@@ -36,17 +37,19 @@ class QrService:
         bytes
             PNG image bytes.
         """
-        raise NotImplementedError
+        qrobj = qrcode.make(url, error_correction=qrcode.ERROR_CORRECT_H)
+        return qrobj.get_image().tobytes()
 
     @staticmethod
     def detect_local_ip() -> str:
         """Detect the local IP of the outgoing network interface.
-
-        Uses a connect-UDP trick: no packet is actually sent.
 
         Returns
         -------
         str
             Local IPv4 address.
         """
-        raise NotImplementedError
+        hostname = socket.gethostname()
+        device_ip = socket.gethostbyname(hostname)
+
+        return device_ip
