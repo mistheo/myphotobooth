@@ -42,7 +42,9 @@ class MdnsAnnouncer:
         try:
             self._zc.register_service(self._info)
         except Exception:
-            self.unannounce()
+            self._zc.close()
+            self._zc = None
+            self._info = None
             raise
 
 
