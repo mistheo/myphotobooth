@@ -42,12 +42,16 @@ class MdnsAnnouncer:
         try:
             self._zc.register_service(self._info)
         except Exception:
-            self._zc.close()
-            self._zc = None
-            self._info = None
+            self.unannounce()
             raise
 
 
     def unannounce(self) -> None:
         """Unregister the service and close the Zeroconf object."""
-        raise NotImplementedError
+        if self._zc and self._info:
+            try:
+                self._zc.unregister_service(self._info)
+            finally:
+                self._zc.close()
+                self._zc = None
+                self._info = None
