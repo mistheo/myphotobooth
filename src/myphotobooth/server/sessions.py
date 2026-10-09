@@ -1,6 +1,6 @@
 """Guest sessions: connection identifier and photo ownership."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
 
@@ -19,7 +19,7 @@ class Session:
 
     def __init__(self) -> None:
         self.token: UUID = uuid4()
-        self.created_at: datetime = datetime.now(datetime.timezone.utc)
+        self.created_at: datetime = datetime.now(timezone.utc)
         self.photo_ids: list[UUID] = []
 
 
@@ -33,6 +33,7 @@ class SessionManager:
     """
 
     def __init__(self, ttl_hours: int = 12) -> None:
+        self.ttl = ttl_hours
         self._sessions: dict[UUID, Session] = {}
 
     def create_session(self) -> Session:
@@ -40,10 +41,12 @@ class SessionManager:
 
         Returns
         -------
-        Session
+        Session²
             The newly created session.
         """
-        raise NotImplementedError
+        new_session = Session()
+        self._sessions[new_session.token] = new_session
+        return new_session
 
     def validate(self, session_id: UUID) -> bool:
         """Check that a session exists and is not expired.
@@ -58,4 +61,4 @@ class SessionManager:
         bool
             True if the session is valid.
         """
-        raise NotImplementedError
+        return session_id in list(self._sessions.keys())
