@@ -5,7 +5,7 @@ from zeroconf import ServiceInfo, Zeroconf
 import re
 
 class MdnsAnnouncer:
-    """Publishes ``<name>.local`` and the _photobooth._tcp service."""
+    """Publishes ``<name>.local`` and the _myphotobooth._http._tcp service."""
 
     def __init__(self) -> None:
         self._zc: Zeroconf | None = None
@@ -28,7 +28,7 @@ class MdnsAnnouncer:
         if not name or not re.match(r"^[a-zA-Z0-9_-]+$", name):
             raise ValueError(f"Invalid name: '{name}'")
         
-        service_type_str = "_myphotobooth._tcp.local."        
+        service_type_str = "_myphotobooth._http._tcp.local."        
         self._info = ServiceInfo(
             service_type_str,
             f"{name}.{service_type_str}",
