@@ -54,7 +54,7 @@ class EventBus:
         conn : Any
             WebSocket connection to register.
         """
-        raise NotImplementedError
+        self._subscribers.append(conn)
 
     def unsubscribe(self, conn: Any) -> None:
         """Unregister a WebSocket connection.
@@ -64,4 +64,4 @@ class EventBus:
         conn : Any
             WebSocket connection to remove.
         """
-        raise NotImplementedError
+        self._subscribers.remove(conn)
